@@ -37,11 +37,14 @@ where cid in (select cid
 
 select cid, name
 from customers
-where cid in ( select cid
-		from orders
-		where pid = 'p01'
-		or pid = 'p07')
-	 ;
+where cid in (select cid
+	      from orders 
+	      where pid = 'p01' 
+	      and cid in (select cid
+			  from orders
+			  where pid = 'p07')
+	     )
+;
 
 -- 5 --
 
