@@ -1,5 +1,5 @@
 ﻿-- Conor Kincart --
--- Database Management --
+-- Database Systems --
 -- April 24, 2014 --
 -- Lab 10 - Stored Procedures --
 
