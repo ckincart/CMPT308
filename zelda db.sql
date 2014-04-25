@@ -346,13 +346,13 @@ values ('w10', 'Hylian Shield', '80 rupees at the market.', 'loc09');
 select * 
 from WeaponsItems;
 
-create table SpiritualStones
-(
- ssid		char(4) not null,
- name		text,
- locId		char(5) not null,
- Primary Key (ssid)
-);
+	create table SpiritualStones
+	(
+	 ssid		char(4) not null,
+	 name		text,
+	 locId		char(5) not null,
+	 Primary Key (ssid)
+	);
 
 insert into SpiritualStones ( ssid, name, locId)
 values ('ss01', 'Kokori Emerald', 'loc08' );
@@ -422,7 +422,20 @@ insert into Tunic ( tid, name, color, purpose, locId)
 values ( 't02', 'Goron Tunic', 'red', 'Allows unlimited extreme heat.', 'loc06');
 
 insert into Tunic ( tid, name, color, purpose, locId)
-values ( 't03', 'Zora Tunic', 'blue', 'Allows breathing underwater.', 'loc01');
+values ( 't03', 'Zora Tunic', 'blue', 'Allows breathing underwater.', 'loc05');
 
 select *
 from Tunic;
+
+create view tunicLocator
+as
+select l.name as Location_Name
+from Locations l, Tunic t
+where t.locid = l.name;
+view TunicLocator;
+
+select Locations.name
+from Locations 
+where locId in ( select locId
+		from WeaponsItems w
+		where name = 'Bombs');
