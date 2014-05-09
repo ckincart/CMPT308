@@ -427,15 +427,59 @@ values ( 't03', 'Zora Tunic', 'blue', 'Allows breathing underwater.', 'loc05');
 select *
 from Tunic;
 
-create view tunicLocator
-as
-select l.name as Location_Name
-from Locations l, Tunic t
-where t.locid = l.name;
-view TunicLocator;
+drop view tunicLocator
+create view tunicLocator AS
+select locations.name as Locations_Name,
+	t.name
+from Locations,
+     Tunic t
+where t.locid = Locations.locId;
+select *
+from tunicLocator;
 
-select Locations.name
-from Locations 
-where locId in ( select locId
-		from WeaponsItems w
-		where name = 'Bombs');
+--select Locations.name
+--from Locations 
+--where locId in ( select locId
+--		from WeaponsItems w
+--		where name = 'Bombs');
+select l.name,
+	t.name
+from Locations l,
+	Tunic t;
+
+-- bomb report
+select l.name, w.name, l.locID
+from Locations l,
+     WeaponsItems w
+where l.locId = w.locID
+and w.name = 'Bombs';
+
+--ocarina songs report
+select o.name, l.name, s.name
+from OcarinaSongs o,
+     Locations l,
+     SpiritualStones s
+where l.locId = o.locId
+     and s.locId = l.locId
+     ;
+
+
+--stored procedure
+create or replace function get_medallions_by_sage(int, REFCURSOR) returns refcursor as 
+$$
+declare
+   medallion int       := $1;
+   resultset   REFCURSOR := $2;
+begin
+   open resultset for 
+      select m.name, m.locId, s.name,
+      from   Medallions m,
+	     Sages s
+       where  m.locId = s.locId;
+   return resultset;
+end;
+$$ 
+language plpgsql;
+
+select get_medallions_by_sage(1, 'results');
+Fetch all from results;
